@@ -9,12 +9,17 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 
 public class AnodiamAuthenticationManager implements AuthenticationManager {
+    private final String jwtSecret;
+
+    public AnodiamAuthenticationManager(String jwtSecret) {
+        this.jwtSecret = jwtSecret;
+    }
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         if(authentication instanceof BearerTokenAuthenticationToken) {
             final String token = ((BearerTokenAuthenticationToken) authentication).getToken();
-            JwtDecoder jwtDecoder = new AnodiamJwtDecoder();
+            JwtDecoder jwtDecoder = new AnodiamJwtDecoder(jwtSecret);
             Jwt jwt = jwtDecoder.decode(token);
             return new AnodiamAuthentication(jwt);
         } else {
