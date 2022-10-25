@@ -1,2 +1,2 @@
 # anodiam-security-commons
-Sample PR template added
+Sample PR template modified
